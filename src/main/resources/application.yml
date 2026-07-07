@@ -3,7 +3,6 @@ spring:
     name: library
 
   datasource:
-    # url: jdbc:postgresql://localhost:5432/library_db
     url: ${LIBRARY_DB_URL}
     username: ${LIBRARY_DB_USERNAME}
     password: ${LIBRARY_DB_PASSWORD}
