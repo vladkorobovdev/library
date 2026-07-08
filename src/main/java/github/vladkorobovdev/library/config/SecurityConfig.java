@@ -43,6 +43,12 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
 
+            .requestMatchers(
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html")
+            .permitAll()
+
             .anyRequest().authenticated())
 
         .sessionManagement(session -> session.sessionCreationPolicy(
