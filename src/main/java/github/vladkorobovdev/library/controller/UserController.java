@@ -35,11 +35,11 @@ public class UserController {
     return ResponseEntity.of(userService.findById(id));
   }
 
-  @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody User user) {
-    User savedUser = userService.create(user);
-    return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-  }
+  // @PostMapping
+  // public ResponseEntity<User> createUser(@RequestBody User user) {
+  // User savedUser = userService.create(user);
+  // return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+  // }
 
   @PutMapping("/{id}")
   public ResponseEntity<User> updateUser(

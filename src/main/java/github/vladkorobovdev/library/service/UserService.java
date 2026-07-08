@@ -10,6 +10,8 @@ public interface UserService {
 
   Optional<User> findById(Long id);
 
+  Optional<User> findByLogin(String login);
+
   User create(User book);
 
   Optional<User> update(Long id, User book);
