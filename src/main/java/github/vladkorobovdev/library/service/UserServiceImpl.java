@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import github.vladkorobovdev.library.model.dto.SignupRequest;
+import github.vladkorobovdev.library.model.dto.UserDTO;
 import github.vladkorobovdev.library.model.entity.Role;
 import github.vladkorobovdev.library.model.entity.User;
 import github.vladkorobovdev.library.repository.UserRepository;
@@ -31,20 +33,20 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(id);
   }
 
-  @Transactional
-  public User create(User user) {
-    user.setRole(Role.USER);
+  // @Transactional
+  // public User create(UserDTO user) {
+  // user.setRole(Role.USER);
+  //
+  // return userRepository.save(user);
+  // }
 
-    return userRepository.save(user);
-  }
-
   @Transactional
-  public Optional<User> update(Long id, User newUser) {
+  public Optional<User> update(Long id, SignupRequest request) {
     return userRepository.findById(id)
         .map(user -> {
-          user.setFirstname(newUser.getFirstname());
-          user.setLastname(newUser.getLastname());
-          user.setLogin(newUser.getLogin());
+          user.setFirstname(request.firstName());
+          user.setLastname(request.lastName());
+          user.setLogin(request.login());
           user.setPassword(passwordEncoder.encode(user.getPassword()));
           return user;
         });

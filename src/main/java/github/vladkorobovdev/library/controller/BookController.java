@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import github.vladkorobovdev.library.model.dto.BookDTO;
 import github.vladkorobovdev.library.model.entity.Book;
 import github.vladkorobovdev.library.service.BookService;
 
@@ -36,7 +37,7 @@ public class BookController {
   }
 
   @PostMapping
-  public ResponseEntity<Book> createBook(@RequestBody Book book) {
+  public ResponseEntity<Book> createBook(@RequestBody BookDTO book) {
     Book savedBook = bookService.create(book);
     return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
   }
@@ -44,7 +45,7 @@ public class BookController {
   @PutMapping("/{id}")
   public ResponseEntity<Book> updateBook(
       @PathVariable Long id,
-      @RequestBody Book book) {
+      @RequestBody BookDTO book) {
     return bookService.update(id, book)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());

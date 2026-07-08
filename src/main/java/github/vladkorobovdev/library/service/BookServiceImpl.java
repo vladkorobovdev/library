@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import github.vladkorobovdev.library.model.dto.BookDTO;
 import github.vladkorobovdev.library.model.entity.Book;
 import github.vladkorobovdev.library.repository.BookRepository;
 
@@ -28,17 +29,23 @@ public class BookServiceImpl implements BookService {
   }
 
   @Transactional
-  public Book create(Book book) {
-    return bookRepository.save(book);
+  public Book create(BookDTO book) {
+    Book newBook = Book.builder()
+        .title(book.title())
+        .author(book.author())
+        .price(book.price())
+        .build();
+
+    return bookRepository.save(newBook);
   }
 
   @Transactional
-  public Optional<Book> update(Long id, Book newBook) {
+  public Optional<Book> update(Long id, BookDTO newBook) {
     return bookRepository.findById(id)
         .map(book -> {
-          book.setAuthor(newBook.getAuthor());
-          book.setTitle(newBook.getTitle());
-          book.setPrice(newBook.getPrice());
+          book.setAuthor(newBook.author());
+          book.setTitle(newBook.title());
+          book.setPrice(newBook.price());
           return book;
         });
   }

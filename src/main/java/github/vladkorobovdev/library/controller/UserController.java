@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import github.vladkorobovdev.library.model.dto.SignupRequest;
 import github.vladkorobovdev.library.model.dto.UserDTO;
 import github.vladkorobovdev.library.model.entity.User;
 import github.vladkorobovdev.library.service.UserService;
@@ -50,10 +51,12 @@ public class UserController {
   // }
 
   @PutMapping("/{id}")
-  public ResponseEntity<User> updateUser(
+  public ResponseEntity<UserDTO> updateUser(
       @PathVariable Long id,
-      @RequestBody User user) {
-    return userService.update(id, user)
+      @RequestBody SignupRequest request) {
+    return userService.update(id, request)
+        .map(
+            user -> new UserDTO(user.getId(), user.getLogin(), user.getFirstname(), user.getLastname(), user.getRole()))
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
   }

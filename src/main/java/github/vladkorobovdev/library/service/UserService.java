@@ -3,6 +3,8 @@ package github.vladkorobovdev.library.service;
 import java.util.List;
 import java.util.Optional;
 
+import github.vladkorobovdev.library.model.dto.SignupRequest;
+import github.vladkorobovdev.library.model.dto.UserDTO;
 import github.vladkorobovdev.library.model.entity.User;
 
 public interface UserService {
@@ -12,9 +14,9 @@ public interface UserService {
 
   Optional<User> findByLogin(String login);
 
-  User create(User book);
+  // User create(UserDTO user);
 
-  Optional<User> update(Long id, User book);
+  Optional<User> update(Long id, SignupRequest user);
 
   void deleteById(Long id);
 
