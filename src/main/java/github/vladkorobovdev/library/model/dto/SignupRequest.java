@@ -1,11 +1,8 @@
 package github.vladkorobovdev.library.model.dto;
 
-import github.vladkorobovdev.library.model.entity.Role;
-
-public record UserDTO(
-    Long id,
+public record SignupRequest(
     String login,
     String firstName,
     String lastName,
-    Role role) {
+    String password) {
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import github.vladkorobovdev.library.model.dto.LoginRequest;
 import github.vladkorobovdev.library.model.dto.LoginResponse;
-import github.vladkorobovdev.library.model.entity.User;
+import github.vladkorobovdev.library.model.dto.SignupRequest;
 import github.vladkorobovdev.library.service.AuthService;
 
 @RestController
@@ -35,9 +35,9 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<String> register(
-      @RequestBody User user) {
+      @RequestBody SignupRequest request) {
 
-    boolean isRegistered = authService.register(user);
+    boolean isRegistered = authService.register(request);
 
     if (isRegistered) {
       return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");

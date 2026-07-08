@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import github.vladkorobovdev.library.config.JwtUtil;
+import github.vladkorobovdev.library.model.dto.SignupRequest;
 import github.vladkorobovdev.library.model.entity.Role;
 import github.vladkorobovdev.library.model.entity.User;
 import github.vladkorobovdev.library.repository.UserRepository;
@@ -36,24 +37,24 @@ public class AuthService {
     return jwtUtil.generateToken(userDetails);
   }
 
-  public boolean register(User user) {
-    if (user.getLogin() == null ||
-        user.getLogin().isBlank() ||
-        user.getPassword() == null ||
-        user.getPassword().isBlank() ||
-        user.getFirstname() == null ||
-        user.getFirstname().isBlank() ||
-        user.getLastname() == null ||
-        user.getLastname().isBlank())
+  public boolean register(SignupRequest request) {
+    if (request.login() == null ||
+        request.login().isBlank() ||
+        request.password() == null ||
+        request.password().isBlank() ||
+        request.firstName() == null ||
+        request.firstName().isBlank() ||
+        request.lastName() == null ||
+        request.lastName().isBlank())
       return false;
-    if (userRepo.findByLogin(user.getLogin()).isPresent())
+    if (userRepo.findByLogin(request.login()).isPresent())
       return false;
 
     User newUser = User.builder()
-        .login(user.getLogin())
-        .firstname(user.getFirstname())
-        .lastname(user.getLastname())
-        .password(passwordEncoder.encode(user.getPassword()))
+        .login(request.login())
+        .firstname(request.firstName())
+        .lastname(request.lastName())
+        .password(passwordEncoder.encode(request.password()))
         .role(Role.USER)
         .build();
 

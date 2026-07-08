@@ -1,5 +1,6 @@
 package github.vladkorobovdev.library.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import github.vladkorobovdev.library.model.dto.UserDTO;
 import github.vladkorobovdev.library.model.entity.User;
 import github.vladkorobovdev.library.service.UserService;
 
@@ -24,13 +26,21 @@ public class UserController {
   }
 
   @GetMapping()
-  public List<User> getAllUsers() {
-    return userService.findAll();
+  public List<UserDTO> getAllUsers() {
+    List<User> users = userService.findAll();
+    List<UserDTO> dtos = new ArrayList<>();
+    for (User user : users) {
+      var userDto = new UserDTO(user.getId(), user.getLogin(), user.getFirstname(), user.getLastname(), user.getRole());
+      dtos.add(userDto);
+    }
+    return dtos;
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable Long id) {
-    return ResponseEntity.of(userService.findById(id));
+  public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+    return ResponseEntity.of(userService.findById(id)
+        .map(user -> new UserDTO(user.getId(), user.getLogin(), user.getFirstname(), user.getLastname(),
+            user.getRole())));
   }
 
   // @PostMapping
