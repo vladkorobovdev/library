@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import github.vladkorobovdev.library.model.dto.SignupRequest;
-import github.vladkorobovdev.library.model.dto.UserDTO;
-import github.vladkorobovdev.library.model.entity.Role;
 import github.vladkorobovdev.library.model.entity.User;
 import github.vladkorobovdev.library.repository.UserRepository;
 

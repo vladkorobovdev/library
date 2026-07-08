@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import github.vladkorobovdev.library.model.dto.SignupRequest;
-import github.vladkorobovdev.library.model.dto.UserDTO;
 import github.vladkorobovdev.library.model.entity.User;
 
 public interface UserService {
