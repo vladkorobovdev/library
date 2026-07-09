@@ -21,60 +21,65 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+        @Bean
+        public SecurityFilterChain securityFilterChain(
+                        HttpSecurity http,
+                        JwtAuthFilter jwtAuthFilter,
+                        AuthenticationProvider authProvider) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .formLogin(form -> form.disable())
+                                .httpBasic(basic -> basic.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/api/auth/**").permitAll()
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(
-      HttpSecurity http,
-      JwtAuthFilter jwtAuthFilter,
-      AuthenticationProvider authProvider) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable())
-        .formLogin(form -> form.disable())
-        .httpBasic(basic -> basic.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**").permitAll()
+                                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.POST, "/api/books").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
 
-            .requestMatchers(HttpMethod.POST, "/api/books").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
 
-            .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/api/orders").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.PUT, "/api/orders/*/status")
+                                                .hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/orders/*")
+                                                .hasRole("ADMIN")
 
-            .requestMatchers(
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html")
-            .permitAll()
+                                                .requestMatchers(
+                                                                "/v3/api-docs/**",
+                                                                "/swagger-ui/**",
+                                                                "/swagger-ui.html")
+                                                .permitAll()
 
-            .anyRequest().authenticated())
+                                                .anyRequest().authenticated())
 
-        .sessionManagement(session -> session.sessionCreationPolicy(
-            SessionCreationPolicy.STATELESS))
-        .authenticationProvider(authProvider)
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                                .sessionManagement(session -> session.sessionCreationPolicy(
+                                                SessionCreationPolicy.STATELESS))
+                                .authenticationProvider(authProvider)
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-  }
+                return http.build();
+        }
 
-  @Bean
-  public AuthenticationProvider authenticationProvider(
-      UserDetailsService userDetailsService,
-      PasswordEncoder passwordEncoder) {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
-    provider.setPasswordEncoder(passwordEncoder);
-    return provider;
-  }
+        @Bean
+        public AuthenticationProvider authenticationProvider(
+                        UserDetailsService userDetailsService,
+                        PasswordEncoder passwordEncoder) {
+                DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+                provider.setPasswordEncoder(passwordEncoder);
+                return provider;
+        }
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-    return config.getAuthenticationManager();
-  }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+                return config.getAuthenticationManager();
+        }
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }

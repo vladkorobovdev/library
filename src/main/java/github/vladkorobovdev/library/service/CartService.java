@@ -1,5 +1,6 @@
 package github.vladkorobovdev.library.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -45,6 +46,13 @@ public class CartService {
     }
 
     userRepository.save(user);
+  }
+
+  @Transactional
+  public List<CartItem> getUserCart(String userLogin) {
+    User user = userRepository.findByLogin(userLogin)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    return user.getCartItems();
   }
 
   @Transactional
