@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: create-drop
+
+stripe:
+  api-key: test_key
+  webhook-secret: test_secret
+  success-url: http://localhost:8080/success
+  cancel-url: http://localhost:8080/cancel
+
+jwt:
+  secret: this_is_a_very_long_dummy_secret_key_for_testing_purposes_only
+  expiration: 86400000
