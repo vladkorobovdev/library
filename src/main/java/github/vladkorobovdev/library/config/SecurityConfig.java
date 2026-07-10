@@ -48,6 +48,11 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.DELETE, "/api/orders/*")
                                                 .hasRole("ADMIN")
 
+                                                .requestMatchers("/api/payments/webhook", "/api/payments/success",
+                                                                "/api/payments/cancel")
+                                                .permitAll()
+                                                .requestMatchers("/error").permitAll()
+
                                                 .requestMatchers(
                                                                 "/v3/api-docs/**",
                                                                 "/swagger-ui/**",
